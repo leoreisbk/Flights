@@ -1,2 +1,2 @@
-r# flights
+# flights
 skyscanner flights
