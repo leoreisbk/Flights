@@ -45,7 +45,8 @@ struct Leg: Codable {
 	let duration: Int
 	let journeyMode: String
 	let stops: [Int]
-	let carriers: [Int]
+	let carriersIdentifiers: [Int]
+	var carriers: [Carrier] = []
 	let directionality: String
 
 	private enum CodingKeys: String, CodingKey {
@@ -73,7 +74,7 @@ struct Leg: Codable {
 		duration = try values.decode(Int.self, forKey: .duration)
 		journeyMode = try values.decode(String.self, forKey: .journeyMode)
 		stops = try values.decode([Int].self, forKey: .stops)
-		carriers = try values.decode([Int].self, forKey: .carriers)
+		carriersIdentifiers = try values.decode([Int].self, forKey: .carriers)
 		directionality = try values.decode(String.self, forKey: .directionality)
 
 	}
@@ -89,7 +90,7 @@ struct Leg: Codable {
 		try container.encode(duration, forKey: .duration)
 		try container.encode(journeyMode, forKey: .journeyMode)
 		try container.encode(stops, forKey: .stops)
-		try container.encode(carriers, forKey: .carriers)
+		try container.encode(carriersIdentifiers, forKey: .carriers)
 		try container.encode(directionality, forKey: .directionality)
 
 	}

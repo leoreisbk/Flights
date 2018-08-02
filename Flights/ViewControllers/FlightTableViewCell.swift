@@ -34,8 +34,9 @@ class FlightTableViewCell: UITableViewCell {
 
 extension FlightTableViewCell {
 	func setupCell(_ itinerary: Itinerary) {
-		let url = URL(string: "https://logos.skyscnr.com/images/airlines/favicon/EZ.png")
-		departureImage.kf.setImage(with: url)
-		arrivalImage.kf.setImage(with: url)
+		let departureImageURL = URL(string: (itinerary.inboundLeg?.carriers.first?.imageURL)!)
+		let arrivalImageURL = URL(string: (itinerary.outboundLeg?.carriers.first?.imageURL)!)
+		departureImage.kf.setImage(with: departureImageURL)
+		arrivalImage.kf.setImage(with: arrivalImageURL)
 	}
 }

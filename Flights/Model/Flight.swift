@@ -13,7 +13,6 @@ struct Flight: Codable {
 	var itineraries: [Itinerary] = []
 	var legs: [Leg]
 	let segments: [Segment]
-	var segmentsFiltered: [Segment] = []
 	let carriers: [Carrier]
 
 	private enum CodingKeys: String, CodingKey {
@@ -37,10 +36,19 @@ struct Flight: Codable {
 			let _ = legs.map { (legJson) -> Void in
 				var leg  = legJson
 				let _ = legJson.segmentIdentifiers.map({ (identifier) ->  Void in
-					let segmentFiltered = segments.filter({ (segment) -> Bool in
+					let segmentsFiltered = segments.filter({ (segment) -> Bool in
 						return segment.identifier == identifier
 					})
-					leg.segments = segmentFiltered
+					
+					leg.segments = segmentsFiltered
+				})
+				
+				let _ = legJson.carriersIdentifiers.map({ (identifier) -> Void in
+					let carriersFiltered = carriers.filter({ (carrier) -> Bool in
+						return carrier.identifier == identifier
+					})
+					
+					leg.carriers = carriersFiltered
 				})
 				
 				if itineraryJson.inboundLegId == leg.identifier {
