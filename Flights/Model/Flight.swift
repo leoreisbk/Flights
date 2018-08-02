@@ -10,9 +10,10 @@ import UIKit
 
 struct Flight: Codable {
 	let status: String
-	let itineraries: [Itinerary]
-	let legs: [Leg]
+	var itineraries: [Itinerary] = []
+	var legs: [Leg]
 	let segments: [Segment]
+	var segmentsFiltered: [Segment] = []
 	let carriers: [Carrier]
 
 	private enum CodingKeys: String, CodingKey {
@@ -26,10 +27,35 @@ struct Flight: Codable {
 	init(from decoder: Decoder) throws {
 		let values = try decoder.container(keyedBy: CodingKeys.self)
 		status = try values.decode(String.self, forKey: .status)
-		itineraries = try values.decode([Itinerary].self, forKey: .itineraries)
+		let itinerariesJSON = try values.decode([Itinerary].self, forKey: .itineraries)
 		legs = try values.decode([Leg].self, forKey: .legs)
 		segments = try values.decode([Segment].self, forKey: .segments)
 		carriers = try values.decode([Carrier].self, forKey: .carriers)
+		
+		let itinerariesArray = itinerariesJSON.map { (itineraryJson) -> Itinerary in
+			var itinerary = itineraryJson
+			let _ = legs.map { (legJson) -> Void in
+				var leg  = legJson
+				let _ = legJson.segmentIdentifiers.map({ (identifier) ->  Void in
+					let segmentFiltered = segments.filter({ (segment) -> Bool in
+						return segment.identifier == identifier
+					})
+					leg.segments = segmentFiltered
+				})
+				
+				if itineraryJson.inboundLegId == leg.identifier {
+					itinerary.inboundLeg = leg
+				}
+				
+				if itineraryJson.outboundLegId == leg.identifier {
+					itinerary.outboundLeg = leg
+				}
+			}
+			
+			return itinerary
+		}
+		
+		itineraries = itinerariesArray
 	}
 
 	func encode(to encoder: Encoder) throws {

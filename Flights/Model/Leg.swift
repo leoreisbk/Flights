@@ -37,6 +37,7 @@ struct Leg: Codable {
 
 	let identifier: String
 	let segmentIdentifiers: [Int]
+	var segments: [Segment] = []
 	let originStation:  Int
 	let destinationStation: Int
 	let departure: String
@@ -74,6 +75,7 @@ struct Leg: Codable {
 		stops = try values.decode([Int].self, forKey: .stops)
 		carriers = try values.decode([Int].self, forKey: .carriers)
 		directionality = try values.decode(String.self, forKey: .directionality)
+
 	}
 
 	func encode(to encoder: Encoder) throws {
