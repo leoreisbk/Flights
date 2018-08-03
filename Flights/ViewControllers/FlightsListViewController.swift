@@ -13,12 +13,24 @@ import PKHUD
 
 class FlightsListViewController: UIViewController {
 	@IBOutlet weak var tableView: UITableView!
+	@IBOutlet weak var headerView: UIView!
+	
 	let provider = MoyaProvider<APIClient>()
 	var itineraries: [Itinerary] = []
 	var flight: Flight?
 	
+	fileprivate func shadoWView() {
+		headerView.layer.shadowOpacity = 0.5
+		headerView.layer.shadowOffset = CGSize(width: 3, height: 3)
+		headerView.layer.shadowRadius = 15.0
+		headerView.layer.shadowColor = UIColor.darkGray.cgColor
+	}
+	
 	override func viewDidLoad() {
 		super.viewDidLoad()
+		
+		shadoWView()
+		
 		requestSessionId(ManagerKeys.ApiKey)
 	}
 }

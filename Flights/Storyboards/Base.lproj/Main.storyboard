@@ -270,6 +270,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="to4-cf-5E8"/>
                     <connections>
+                        <outlet property="headerView" destination="kZ4-PC-HBS" id="335-fl-U6a"/>
                         <outlet property="tableView" destination="DlO-yc-AiV" id="Mlp-qv-P1i"/>
                     </connections>
                 </viewController>
