@@ -36,6 +36,16 @@ extension FlightTableViewCell {
 	func setupCell(_ itinerary: Itinerary) {
 		let departureImageURL = URL(string: (itinerary.inboundLeg?.carriers.first?.imageURL)!)
 		let arrivalImageURL = URL(string: (itinerary.outboundLeg?.carriers.first?.imageURL)!)
+		
+		
+		if let price = itinerary.pricingOptions.first {
+			flightPrice.text = "£ \(price.price)"
+		} else {
+			flightPrice.isHidden = true
+		}
+		
+		
+//		flightPrice.text = "$ \(String(describing: itinerary.pricingOptions.first?.price))"
 		departureImage.kf.setImage(with: departureImageURL)
 		arrivalImage.kf.setImage(with: arrivalImageURL)
 	}

@@ -19,16 +19,14 @@ class FlightsListViewController: UIViewController {
 	var itineraries: [Itinerary] = []
 	var flight: Flight?
 	
-	fileprivate func shadoWView() {		
+	fileprivate func shadoWView() {
 		let shadow = BPKShadow.shadowSm()
 		shadow.apply(to: headerView.layer)
 	}
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		
 		shadoWView()
-		
 		requestSessionId(ManagerKeys.ApiKey)
 	}
 }
