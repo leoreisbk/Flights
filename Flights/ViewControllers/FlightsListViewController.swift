@@ -19,11 +19,9 @@ class FlightsListViewController: UIViewController {
 	var itineraries: [Itinerary] = []
 	var flight: Flight?
 	
-	fileprivate func shadoWView() {
-		headerView.layer.shadowOpacity = 0.5
-		headerView.layer.shadowOffset = CGSize(width: 3, height: 3)
-		headerView.layer.shadowRadius = 15.0
-		headerView.layer.shadowColor = UIColor.darkGray.cgColor
+	fileprivate func shadoWView() {		
+		let shadow = BPKShadow.shadowSm()
+		shadow.apply(to: headerView.layer)
 	}
 	
 	override func viewDidLoad() {
@@ -96,5 +94,15 @@ extension FlightsListViewController {
 				print(error)
 			}
 		}
+	}
+}
+
+extension FlightsListViewController: UIScrollViewDelegate {
+	func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+		
+	}
+	
+	func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+		
 	}
 }
