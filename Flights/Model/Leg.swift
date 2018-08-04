@@ -80,7 +80,7 @@ struct Leg: Codable {
 
 		departure = Date.getFormattedDate(stringDate: departureStr, formatter: "HH:mm")
 		arrival = Date.getFormattedDate(stringDate: arrivalStr, formatter: "HH:mm")
-		duration = durationInt.minutesToHoursMinutes(minutes: durationInt)
+		duration = durationInt.minutesToHoursMinutes()
 
 	}
 
@@ -102,14 +102,15 @@ struct Leg: Codable {
 }
 
 extension Int {
-	func minutesToHoursMinutes (minutes : Int) -> String {
-		let tuple: (hours : Int , leftMinutes : Int) =  (minutes / 60, (minutes % 60))
-		return "\(tuple.hours)h" + " " + "\(tuple.leftMinutes)m"
+	func minutesToHoursMinutes () -> String {
+		let tupleTime: (hours : Int , leftMinutes : Int) =  (self / 60, (self % 60))
+		return "\(tupleTime.hours)h" + " " + "\(tupleTime.leftMinutes)m"
 	}
 }
 
 extension Date {
-	static func getFormattedDate(stringDate: String, formatter: String) -> String{
+	static func getFormattedDate(stringDate: String, formatter: String) -> String {
+//		"MMM dd,yyyy"
 		let dateFormatterGet = DateFormatter()
 		dateFormatterGet.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
 

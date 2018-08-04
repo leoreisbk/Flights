@@ -26,6 +26,7 @@ class FlightsListViewController: UIViewController {
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
+		self.title = "Edinburgh to London"
 		shadoWView()
 		requestSessionId(ManagerKeys.ApiKey)
 	}
