@@ -42,7 +42,7 @@ struct Leg: Codable {
 	let destinationStation: Int
 	let departure: String
 	let arrival: String
-	let duration: Int
+	let duration: String
 	let journeyMode: String
 	let stops: [Int]
 	let carriersIdentifiers: [Int]
@@ -69,13 +69,18 @@ struct Leg: Codable {
 		segmentIdentifiers = try values.decode([Int].self, forKey: .segmentIdentifiers)
 		originStation = try values.decode(Int.self, forKey: .originStation)
 		destinationStation = try values.decode(Int.self, forKey: .destinationStation)
-		departure = try values.decode(String.self, forKey: .departure)
-		arrival = try values.decode(String.self, forKey: .arrival)
-		duration = try values.decode(Int.self, forKey: .duration)
+		let departureStr = try values.decode(String.self, forKey: .departure)
+		let arrivalStr = try values.decode(String.self, forKey: .arrival)
+		let durationInt = try values.decode(Int.self, forKey: .duration)
 		journeyMode = try values.decode(String.self, forKey: .journeyMode)
 		stops = try values.decode([Int].self, forKey: .stops)
 		carriersIdentifiers = try values.decode([Int].self, forKey: .carriers)
 		directionality = try values.decode(String.self, forKey: .directionality)
+
+
+		departure = Date.getFormattedDate(stringDate: departureStr, formatter: "HH:mm")
+		arrival = Date.getFormattedDate(stringDate: arrivalStr, formatter: "HH:mm")
+		duration = durationInt.minutesToHoursMinutes(minutes: durationInt)
 
 	}
 
@@ -94,6 +99,24 @@ struct Leg: Codable {
 		try container.encode(directionality, forKey: .directionality)
 
 	}
+}
 
+extension Int {
+	func minutesToHoursMinutes (minutes : Int) -> String {
+		let tuple: (hours : Int , leftMinutes : Int) =  (minutes / 60, (minutes % 60))
+		return "\(tuple.hours)h" + " " + "\(tuple.leftMinutes)m"
+	}
+}
 
+extension Date {
+	static func getFormattedDate(stringDate: String, formatter: String) -> String{
+		let dateFormatterGet = DateFormatter()
+		dateFormatterGet.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
+
+		let dateFormatterPrint = DateFormatter()
+		dateFormatterPrint.dateFormat = formatter
+
+		let date: Date? = dateFormatterGet.date(from: stringDate)
+		return dateFormatterPrint.string(from: date!);
+	}
 }
