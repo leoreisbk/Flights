@@ -35,11 +35,14 @@ class FlightTableViewCell: UITableViewCell {
 extension FlightTableViewCell {
 	func setupCell(_ itinerary: Itinerary) {
 		if let inboundLeg = itinerary.inboundLeg, let outboundLeg = itinerary.outboundLeg {
-			if let departureImageString = inboundLeg.carriers.first, let arrivalImageString = outboundLeg.carriers.first {
-				let departureImageURL = URL(string: departureImageString.imageURL)
-				let arrivalImageURL = URL(string: arrivalImageString.imageURL)
+			if let departureCarrier = inboundLeg.carriers.first, let arrivalCarrier = outboundLeg.carriers.first {
+				let departureImageURL = URL(string: departureCarrier.imageURL)
+				let arrivalImageURL = URL(string: arrivalCarrier.imageURL)
 				departureImage.kf.setImage(with: departureImageURL)
 				arrivalImage.kf.setImage(with: arrivalImageURL)
+
+				departureOrigin.text = departureCarrier.name
+				arrivalOrigin.text = arrivalCarrier.name
 			}
 
 			if let price = itinerary.pricingOptions.first {
