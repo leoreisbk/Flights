@@ -86,10 +86,10 @@ extension APIClient: TargetType {
 					"locationSchema": "sky"]
 		case .flights( _, let apiKey):
 			return ["apiKey": apiKey,
-					"stops": 0,
+//					"stops": 0,
 					"duration":360,
 					"pageIndex": 0,
-					"pageSize": 10]
+					"pageSize": 20]
 		
 		}
 	}

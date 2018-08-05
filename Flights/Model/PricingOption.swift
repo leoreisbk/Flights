@@ -16,7 +16,8 @@ struct PricingOption: Codable {
 //	"QuoteAgeInMinutes": 38,
 //	"Price": 78.8,
 
-	let agents: [Int]
+	let agentsIdentifiers: [Int]
+	var agents: [Agent] = []
 	let quoteAgeInMinutes: Int
 	let price: Double
 
@@ -28,14 +29,14 @@ struct PricingOption: Codable {
 
 	init(from decoder: Decoder) throws {
 		let values = try decoder.container(keyedBy: CodingKeys.self)
-		agents = try values.decode([Int].self, forKey: .agents)
+		agentsIdentifiers = try values.decode([Int].self, forKey: .agents)
 		quoteAgeInMinutes = try values.decode(Int.self, forKey: .quoteAgeInMinutes)
 		price = try values.decode(Double.self, forKey: .price)
 	}
 
 	func encode(to encoder: Encoder) throws {
 		var container = encoder.container(keyedBy: CodingKeys.self)
-		try container.encode(agents, forKey: .agents)
+		try container.encode(agentsIdentifiers, forKey: .agents)
 		try container.encode(quoteAgeInMinutes, forKey: .quoteAgeInMinutes)
 		try container.encode(price, forKey: .price)
 	}

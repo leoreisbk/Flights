@@ -14,6 +14,7 @@ struct Itinerary: Codable {
 	let pricingOptions: [PricingOption]
 	var inboundLeg: Leg? 
 	var outboundLeg: Leg?
+	var priceOptions: [PricingOption] = []
 
 	private enum CodingKeys: String, CodingKey {
 		case outboundLegId = "OutboundLegId"

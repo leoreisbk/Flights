@@ -45,7 +45,7 @@ extension FlightTableViewCell {
 				arrivalOrigin.text = arrivalCarrier.name
 			}
 
-			if let price = itinerary.pricingOptions.first {
+			if let price = itinerary.priceOptions.first {
 				flightPrice.text = "£ \(price.price)"
 			} else {
 				flightPrice.isHidden = true

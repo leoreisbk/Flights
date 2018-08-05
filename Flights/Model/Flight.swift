@@ -14,6 +14,7 @@ struct Flight: Codable {
 	var legs: [Leg]
 	let segments: [Segment]
 	let carriers: [Carrier]
+	let agents: [Agent]
 
 	private enum CodingKeys: String, CodingKey {
 		case status = "Status"
@@ -21,6 +22,7 @@ struct Flight: Codable {
 		case legs = "Legs"
 		case segments = "Segments"
 		case carriers = "Carriers"
+		case agents = "Agents"
 	}
 
 	init(from decoder: Decoder) throws {
@@ -30,6 +32,7 @@ struct Flight: Codable {
 		legs = try values.decode([Leg].self, forKey: .legs)
 		segments = try values.decode([Segment].self, forKey: .segments)
 		carriers = try values.decode([Carrier].self, forKey: .carriers)
+		agents = try values.decode([Agent].self, forKey: .agents)
 		
 		let itinerariesArray = itinerariesJSON.map { (itineraryJson) -> Itinerary in
 			var itinerary = itineraryJson
@@ -59,6 +62,18 @@ struct Flight: Codable {
 					itinerary.outboundLeg = leg
 				}
 			}
+			let priceOptionsArray = itinerary.pricingOptions.map({ (priceOptionJSON) -> PricingOption in
+				var priceOption = priceOptionJSON
+				let _ = priceOptionJSON.agentsIdentifiers.map({ (identifier) -> Void in
+					let agentsArray = agents.filter({ (agentJSON) -> Bool in
+						return agentJSON.identifier == identifier
+					})
+					priceOption.agents = agentsArray
+				})
+				return priceOption
+			})
+
+			itinerary.priceOptions = priceOptionsArray
 			
 			return itinerary
 		}
@@ -73,5 +88,6 @@ struct Flight: Codable {
 		try container.encode(legs, forKey: .legs)
 		try container.encode(segments, forKey: .segments)
 		try container.encode(carriers, forKey: .carriers)
+		try container.encode(agents, forKey: .agents)
 	}
 }
