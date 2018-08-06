@@ -9,7 +9,6 @@ target 'Flights' do
   
   pod 'Alamofire', '~> 4.7'
   pod 'Kingfisher', '~> 4.0'
-  pod 'PKHUD', '~> 5.0'
 
   pod 'SwiftyJSON'
   pod 'Moya'

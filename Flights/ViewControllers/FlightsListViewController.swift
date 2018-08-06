@@ -31,7 +31,6 @@ class FlightsListViewController: UIViewController {
 		tableView.dataSource = self
 		tableView.pagingDelegate = self
 		shadoWView()
-//		requestSession(ManagerKeys.ApiKey)
 	}
 }
 
@@ -85,7 +84,7 @@ extension FlightsListViewController {
 				if response.data.count > 0 && response.statusCode == 200 {
 					do {
 						let flights = try JSONDecoder().decode(Flight.self, from: response.data)
-						self.itineraries = flights.itineraries
+						self.itineraries.append(contentsOf:flights.itineraries)
 						
 						let firstIndex = page * self.numberOfItemsPerPage
 						guard firstIndex < self.itineraries.count else {
@@ -100,7 +99,7 @@ extension FlightsListViewController {
 					}
 				} else {
 					self.requestURLSession(ManagerKeys.ApiKey, completion: { (completed) in
-						print("SessionError")
+						self.tableView.isLoading = !completed
 					})
 				}
 			case .failure(let error):
@@ -114,12 +113,14 @@ extension FlightsListViewController {
 
 extension FlightsListViewController: PagingTableViewDelegate {
 	func paginate(_ tableView: PagingTableView, to page: Int) {
-		tableView.isLoading = true
+		self.tableView.isLoading = true
 		requestURLSession(ManagerKeys.ApiKey) { (completed) in
 			if completed {
 				self.requestFlights(page: page, urlString: self.urlString, apiKey: ManagerKeys.ApiKey, completion: { (results) in
 					self.itineraries.append(contentsOf: results)
+					
 					self.tableView.isLoading = false
+					
 				})
 			}
 		}
