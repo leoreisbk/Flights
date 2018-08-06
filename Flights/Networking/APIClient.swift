@@ -77,8 +77,8 @@ extension APIClient: TargetType {
 					"locale": "en-GB",
 					"originPlace": "EDI-sky",
 					"destinationPlace": "LOND-sky",
-					"outboundDate": "2018-08-06",
-					"inboundDate": "2018-08-07",
+					"outboundDate": "2018-08-07",
+					"inboundDate": "2018-08-08",
 					"adults": "1",
 					"cabinclass": "Economy",
 					"children": "0",
@@ -86,10 +86,10 @@ extension APIClient: TargetType {
 					"locationSchema": "sky"]
 		case .flights( _, let apiKey, let page):
 			return ["apiKey": apiKey,
-//					"stops": 0,
+					"stops": 0,
 //					"duration":360,
 					"pageIndex": page,
-					"pageSize": 10]
+					"pageSize": 20]
 		
 		}
 	}

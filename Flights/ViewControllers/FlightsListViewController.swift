@@ -9,7 +9,6 @@
 import UIKit
 import Moya
 import Alamofire
-import PKHUD
 import PagingTableView
 
 class FlightsListViewController: UIViewController {
@@ -18,9 +17,8 @@ class FlightsListViewController: UIViewController {
 	
 	let provider = MoyaProvider<APIClient>()
 	var itineraries: [Itinerary] = []
-	var flight: Flight?
 	let numberOfItemsPerPage = 10
-	let pageIndex = 0
+	var urlString = ""
 	
 	fileprivate func shadoWView() {
 		let shadow = BPKShadow.shadowSm()
@@ -33,6 +31,7 @@ class FlightsListViewController: UIViewController {
 		tableView.dataSource = self
 		tableView.pagingDelegate = self
 		shadoWView()
+//		requestSession(ManagerKeys.ApiKey)
 	}
 }
 
@@ -57,42 +56,52 @@ extension FlightsListViewController: UITableViewDelegate, UITableViewDataSource 
 // MARK: - Networking
 
 extension FlightsListViewController {
-	fileprivate func requestSessionId(_ apiKey: String) {
-		HUD.show(.progress)
+	fileprivate func requestURLSession(_ apiKey: String, completion: @escaping (_ completed: Bool) -> Void) {
 		provider.request(.session(apiKey: apiKey)) { (result) in
 			switch result {
 			case .success(let response):
 				let responseData = response.response
 				if let locationDict = responseData?.allHeaderFields {
 					if let locationURL = locationDict["Location"] as? String {
-						self.requestFlights(page: self.pageIndex, urlString: locationURL, apiKey: apiKey, completion: { results in
-							do {
-								let flights = try JSONDecoder().decode(Flight.self, from: results as! Data)
-								self.itineraries = flights.itineraries
-								self.flight = flights
-								self.tableView.reloadData()
-//								self.tableView.isLoading = false
-								HUD.hide()
-							} catch let err {
-								print(err)
-							}
-						})
+						self.urlString = locationURL
+						completion(true)
 					}
+				} else {
+					completion(false)
 				}
 			case .failure(let error):
-				print(error)
+				if error.response != nil {
+					completion(false)
+				}
+				
 			}
 		}
 	}
 	
-	fileprivate func requestFlights(page: Int, urlString: String, apiKey: String, completion: @escaping (_ results: Any) -> Void) {
+	fileprivate func requestFlights(page: Int, urlString: String, apiKey: String, completion: @escaping (_ results: [Itinerary]) -> Void) {
 		provider.request(.flights(urlString: urlString, apiKey: apiKey, page: page)) { (result) in
 			switch result {
 			case .success(let response):
 				if response.data.count > 0 && response.statusCode == 200 {
-					completion(response.data)
+					do {
+						let flights = try JSONDecoder().decode(Flight.self, from: response.data)
+						self.itineraries = flights.itineraries
+						
+						let firstIndex = page * self.numberOfItemsPerPage
+						guard firstIndex < self.itineraries.count else {
+							completion([])
+							return
+						}
+						let lastIndex = (page + 1) * self.numberOfItemsPerPage < self.itineraries.count ?
+							(page + 1) * self.numberOfItemsPerPage : self.itineraries.count
+						completion(Array(self.itineraries[firstIndex ..< lastIndex]))
+					} catch let err {
+						print(err)
+					}
 				} else {
-					self.requestSessionId(apiKey)
+					self.requestURLSession(ManagerKeys.ApiKey, completion: { (completed) in
+						print("SessionError")
+					})
 				}
 			case .failure(let error):
 				print(error)
@@ -105,28 +114,14 @@ extension FlightsListViewController {
 
 extension FlightsListViewController: PagingTableViewDelegate {
 	func paginate(_ tableView: PagingTableView, to page: Int) {
-//		tableView.isLoading = true
-		requestSessionId(ManagerKeys.ApiKey)
-//		loadData(at: page, urlString: <#String#>, apiKey: <#String#>) { contents in
-//			self.itineraries.append(contentsOf: contents)
-//			self.tableView.isLoading = false
-//		}
+		tableView.isLoading = true
+		requestURLSession(ManagerKeys.ApiKey) { (completed) in
+			if completed {
+				self.requestFlights(page: page, urlString: self.urlString, apiKey: ManagerKeys.ApiKey, completion: { (results) in
+					self.itineraries.append(contentsOf: results)
+					self.tableView.isLoading = false
+				})
+			}
+		}
 	}
-
-//	func loadData(at page: String, urlString: String, apiKey: String, completion: @escaping (_ results: Any) -> Void) {
-//		requestFlights(urlString: urlString, apiKey: apiKey) { (result) in
-//
-//
-//		}
-//		DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-//			let firstIndex = page * self.numberOfItemsPerPage
-//			guard firstIndex < self.itineraries.count else {
-//				completion()
-//				return
-//			}
-//			let lastIndex = (page + 1) * self.numberOfItemsPerPage < self.itineraries.count ?
-//				(page + 1) * self.numberOfItemsPerPage : self.itineraries.count
-//			onComplete(Array(self.itineraries[firstIndex ..< lastIndex]))
-//		}
-//	}
 }
