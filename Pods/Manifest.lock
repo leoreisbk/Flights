@@ -20,6 +20,7 @@ PODS:
   - Moya/Core (11.0.2):
     - Alamofire (~> 4.1)
     - Result (~> 3.0)
+  - PagingTableView (0.1.0)
   - PKHUD (5.1.0)
   - Result (3.2.4)
   - SwiftyJSON (4.1.0)
@@ -29,6 +30,7 @@ DEPENDENCIES:
   - Backpack
   - Kingfisher (~> 4.0)
   - Moya
+  - PagingTableView
   - PKHUD (~> 5.0)
   - SwiftyJSON
 
@@ -38,6 +40,7 @@ SPEC REPOS:
     - Backpack
     - Kingfisher
     - Moya
+    - PagingTableView
     - PKHUD
     - Result
     - SwiftyJSON
@@ -47,10 +50,11 @@ SPEC CHECKSUMS:
   Backpack: b732cf0ed2fbb84e35e34c4c65faab9e0bf5ed46
   Kingfisher: 868c1149679a7ab6869be118faa9b5aed154aaf0
   Moya: a725035953bc1c0eb1be505ab903984501d82440
+  PagingTableView: ba7869ff22f7cf3f8b2190b0314688d2cb0e46c4
   PKHUD: 62ea46a1e88c4def1da784878d199bb54c841e3c
   Result: d2d07204ce72856f1fd9130bbe42c35a7b0fea10
   SwiftyJSON: c29297daf073d2aa016295d5809cdd68045c39b3
 
-PODFILE CHECKSUM: fb508195aa344dc071d00b8f3513c4b70342852f
+PODFILE CHECKSUM: cb017a236dcc2d3d0f07f34aee1f70af652e08de
 
 COCOAPODS: 1.5.3

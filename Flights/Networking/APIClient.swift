@@ -12,7 +12,7 @@ import Moya
 
 enum APIClient {
 	case session(apiKey: String)
-	case flights(urlString: String, apiKey: String)
+	case flights(urlString: String, apiKey: String, page: Int)
 }
 
 extension APIClient: TargetType {
@@ -59,7 +59,7 @@ extension APIClient: TargetType {
 	
 	var base: String {
 		switch self {
-		case .flights(let urlString, _):
+		case .flights(let urlString, _, _):
 			return urlString
 		default:
 			return "http://partners.api.skyscanner.net/apiservices"
@@ -84,12 +84,12 @@ extension APIClient: TargetType {
 					"children": "0",
 					"infants": "0",
 					"locationSchema": "sky"]
-		case .flights( _, let apiKey):
+		case .flights( _, let apiKey, let page):
 			return ["apiKey": apiKey,
 //					"stops": 0,
-					"duration":360,
-					"pageIndex": 0,
-					"pageSize": 20]
+//					"duration":360,
+					"pageIndex": page,
+					"pageSize": 10]
 		
 		}
 	}

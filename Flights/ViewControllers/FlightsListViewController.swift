@@ -10,14 +10,17 @@ import UIKit
 import Moya
 import Alamofire
 import PKHUD
+import PagingTableView
 
 class FlightsListViewController: UIViewController {
-	@IBOutlet weak var tableView: UITableView!
+	@IBOutlet weak var tableView: PagingTableView!
 	@IBOutlet weak var headerView: UIView!
 	
 	let provider = MoyaProvider<APIClient>()
 	var itineraries: [Itinerary] = []
 	var flight: Flight?
+	let numberOfItemsPerPage = 10
+	let pageIndex = 0
 	
 	fileprivate func shadoWView() {
 		let shadow = BPKShadow.shadowSm()
@@ -27,8 +30,9 @@ class FlightsListViewController: UIViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		self.title = "Edinburgh to London"
+		tableView.dataSource = self
+		tableView.pagingDelegate = self
 		shadoWView()
-		requestSessionId(ManagerKeys.ApiKey)
 	}
 }
 
@@ -61,12 +65,13 @@ extension FlightsListViewController {
 				let responseData = response.response
 				if let locationDict = responseData?.allHeaderFields {
 					if let locationURL = locationDict["Location"] as? String {
-						self.requestFlights(urlString: locationURL, apiKey: apiKey, completion: { results in
+						self.requestFlights(page: self.pageIndex, urlString: locationURL, apiKey: apiKey, completion: { results in
 							do {
 								let flights = try JSONDecoder().decode(Flight.self, from: results as! Data)
 								self.itineraries = flights.itineraries
 								self.flight = flights
 								self.tableView.reloadData()
+//								self.tableView.isLoading = false
 								HUD.hide()
 							} catch let err {
 								print(err)
@@ -80,8 +85,8 @@ extension FlightsListViewController {
 		}
 	}
 	
-	fileprivate func requestFlights(urlString: String, apiKey: String, completion: @escaping (_ results: Any) -> Void) {
-		provider.request(.flights(urlString: urlString, apiKey: apiKey)) { (result) in
+	fileprivate func requestFlights(page: Int, urlString: String, apiKey: String, completion: @escaping (_ results: Any) -> Void) {
+		provider.request(.flights(urlString: urlString, apiKey: apiKey, page: page)) { (result) in
 			switch result {
 			case .success(let response):
 				if response.data.count > 0 && response.statusCode == 200 {
@@ -96,12 +101,32 @@ extension FlightsListViewController {
 	}
 }
 
-extension FlightsListViewController: UIScrollViewDelegate {
-	func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-		
+// MARK: - PagingTableView
+
+extension FlightsListViewController: PagingTableViewDelegate {
+	func paginate(_ tableView: PagingTableView, to page: Int) {
+//		tableView.isLoading = true
+		requestSessionId(ManagerKeys.ApiKey)
+//		loadData(at: page, urlString: <#String#>, apiKey: <#String#>) { contents in
+//			self.itineraries.append(contentsOf: contents)
+//			self.tableView.isLoading = false
+//		}
 	}
-	
-	func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-		
-	}
+
+//	func loadData(at page: String, urlString: String, apiKey: String, completion: @escaping (_ results: Any) -> Void) {
+//		requestFlights(urlString: urlString, apiKey: apiKey) { (result) in
+//
+//
+//		}
+//		DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+//			let firstIndex = page * self.numberOfItemsPerPage
+//			guard firstIndex < self.itineraries.count else {
+//				completion()
+//				return
+//			}
+//			let lastIndex = (page + 1) * self.numberOfItemsPerPage < self.itineraries.count ?
+//				(page + 1) * self.numberOfItemsPerPage : self.itineraries.count
+//			onComplete(Array(self.itineraries[firstIndex ..< lastIndex]))
+//		}
+//	}
 }

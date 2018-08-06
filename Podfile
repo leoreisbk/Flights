@@ -14,6 +14,7 @@ target 'Flights' do
   pod 'SwiftyJSON'
   pod 'Moya'
   pod 'Backpack'
+  pod 'PagingTableView'
 
 
 
