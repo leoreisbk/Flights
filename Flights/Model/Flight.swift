@@ -25,16 +25,8 @@ struct Flight: Codable {
 		case agents = "Agents"
 	}
 
-	init(from decoder: Decoder) throws {
-		let values = try decoder.container(keyedBy: CodingKeys.self)
-		status = try values.decode(String.self, forKey: .status)
-		let itinerariesJSON = try values.decode([Itinerary].self, forKey: .itineraries)
-		legs = try values.decode([Leg].self, forKey: .legs)
-		segments = try values.decode([Segment].self, forKey: .segments)
-		carriers = try values.decode([Carrier].self, forKey: .carriers)
-		agents = try values.decode([Agent].self, forKey: .agents)
-		
-		let itinerariesArray = itinerariesJSON.map { (itineraryJson) -> Itinerary in
+	fileprivate func filterItineraries(_ itinerariesJSON: [Itinerary]) -> [Itinerary] {
+		return itinerariesJSON.map { (itineraryJson) -> Itinerary in
 			var itinerary = itineraryJson
 			let _ = legs.map { (legJson) -> Void in
 				var leg  = legJson
@@ -72,11 +64,23 @@ struct Flight: Codable {
 				})
 				return priceOption
 			})
-
+			
 			itinerary.priceOptions = priceOptionsArray
 			
 			return itinerary
 		}
+	}
+	
+	init(from decoder: Decoder) throws {
+		let values = try decoder.container(keyedBy: CodingKeys.self)
+		status = try values.decode(String.self, forKey: .status)
+		let itinerariesJSON = try values.decode([Itinerary].self, forKey: .itineraries)
+		legs = try values.decode([Leg].self, forKey: .legs)
+		segments = try values.decode([Segment].self, forKey: .segments)
+		carriers = try values.decode([Carrier].self, forKey: .carriers)
+		agents = try values.decode([Agent].self, forKey: .agents)
+		
+		let itinerariesArray = filterItineraries(itinerariesJSON)
 		
 		itineraries = itinerariesArray
 	}
