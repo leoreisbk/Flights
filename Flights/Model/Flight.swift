@@ -31,18 +31,13 @@ struct Flight: Codable {
 			let _ = legs.map { (legJson) -> Void in
 				var leg  = legJson
 				let _ = legJson.segmentIdentifiers.map({ (identifier) ->  Void in
-					let segmentsFiltered = segments.filter({ (segment) -> Bool in
-						return segment.identifier == identifier
-					})
-					
+					let segmentsFiltered = segments.filter({ $0.identifier == identifier })
 					leg.segments = segmentsFiltered
 				})
 				
 				let _ = legJson.carriersIdentifiers.map({ (identifier) -> Void in
-					let carriersFiltered = carriers.filter({ (carrier) -> Bool in
-						return carrier.identifier == identifier
+					let carriersFiltered = carriers.filter({ $0.identifier == identifier
 					})
-					
 					leg.carriers = carriersFiltered
 				})
 				
@@ -57,8 +52,7 @@ struct Flight: Codable {
 			let priceOptionsArray = itinerary.pricingOptions.map({ (priceOptionJSON) -> PricingOption in
 				var priceOption = priceOptionJSON
 				let _ = priceOptionJSON.agentsIdentifiers.map({ (identifier) -> Void in
-					let agentsArray = agents.filter({ (agentJSON) -> Bool in
-						return agentJSON.identifier == identifier
+					let agentsArray = agents.filter({ $0.identifier == identifier
 					})
 					priceOption.agents = agentsArray
 				})
