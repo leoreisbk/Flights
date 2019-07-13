@@ -83,23 +83,23 @@ extension FlightsListViewController {
 		provider.request(.flights(urlString: urlString, apiKey: apiKey, page: page)) { (result) in
 			switch result {
 			case .success(let response):
-				if response.data.count > 0 && response.statusCode == 200 {
-					do {
-						let flights = try JSONDecoder().decode(Flight.self, from: response.data)
-						self.itineraries.append(contentsOf:flights.itineraries)
-						
-						let firstIndex = page * self.numberOfItemsPerPage
-						guard firstIndex < self.itineraries.count else {
-							completion([])
-							return
-						}
-						let lastIndex = (page + 1) * self.numberOfItemsPerPage < self.itineraries.count ?
-							(page + 1) * self.numberOfItemsPerPage : self.itineraries.count
-						completion(Array(self.itineraries[firstIndex ..< lastIndex]))
-					} catch let err {
-						print(err)
-					}
-				} else {
+                if response.data.count > 0 && response.statusCode == 200 {
+                    do {
+                        let flights = try JSONDecoder().decode(Flight.self, from: response.data)
+                        self.itineraries.append(contentsOf:flights.itineraries)
+                        
+                        let firstIndex = page * self.numberOfItemsPerPage
+                        guard firstIndex < self.itineraries.count else {
+                            completion([])
+                            return
+                        }
+                        let lastIndex = (page + 1) * self.numberOfItemsPerPage < self.itineraries.count ?
+                            (page + 1) * self.numberOfItemsPerPage : self.itineraries.count
+                        completion(Array(self.itineraries[firstIndex ..< lastIndex]))
+                    } catch let err {
+                        print(err)
+                    }
+                } else {
 					self.requestURLSession(ManagerKeys.ApiKey, completion: { (completed) in
 						self.tableView.isLoading = !completed
 					})
@@ -120,7 +120,6 @@ extension FlightsListViewController: PagingTableViewDelegate {
 			if completed {
 				self.requestFlights(page: page, urlString: self.urlString, apiKey: ManagerKeys.ApiKey, completion: { (results) in
 					self.itineraries.append(contentsOf: results)
-					
 					self.tableView.isLoading = false
 					
 				})

@@ -23,8 +23,10 @@ extension APIClient: TargetType {
 	var headers: [String : String]? {
 		switch self {
 		case .session:
-			return ["Content-Type": "application/x-www-form-urlencoded"]
-		case .flights:
+			return ["Content-Type": "application/x-www-form-urlencoded",
+					"Accept": "application/json",
+					"X-Forwarded-For": APIClient.getIPAddress()!]
+		default:
 			return ["Content-Type": "application/json",
 					"Accept": "application/json"]
 		}
