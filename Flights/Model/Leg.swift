@@ -77,9 +77,9 @@ struct Leg: Codable {
 		carriersIdentifiers = try values.decode([Int].self, forKey: .carriers)
 		directionality = try values.decode(String.self, forKey: .directionality)
 
-
-		departure = Date.getFormattedDate(stringDate: departureStr, formatter: "HH:mm")
-		arrival = Date.getFormattedDate(stringDate: arrivalStr, formatter: "HH:mm")
+        let format = "dd/MM HH:mm"
+		departure = Date.getFormattedDate(stringDate: departureStr, formatter: format)
+		arrival = Date.getFormattedDate(stringDate: arrivalStr, formatter: format)
 		duration = durationInt.minutesToHoursMinutes()
 
 	}
@@ -98,26 +98,5 @@ struct Leg: Codable {
 		try container.encode(carriersIdentifiers, forKey: .carriers)
 		try container.encode(directionality, forKey: .directionality)
 
-	}
-}
-
-extension Int {
-	func minutesToHoursMinutes () -> String {
-		let tupleTime: (hours : Int , leftMinutes : Int) =  (self / 60, (self % 60))
-		return "\(tupleTime.hours)h" + " " + "\(tupleTime.leftMinutes)m"
-	}
-}
-
-extension Date {
-	static func getFormattedDate(stringDate: String, formatter: String) -> String {
-//		"MMM dd,yyyy"
-		let dateFormatterGet = DateFormatter()
-		dateFormatterGet.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
-
-		let dateFormatterPrint = DateFormatter()
-		dateFormatterPrint.dateFormat = formatter
-
-		let date: Date? = dateFormatterGet.date(from: stringDate)
-		return dateFormatterPrint.string(from: date!);
 	}
 }

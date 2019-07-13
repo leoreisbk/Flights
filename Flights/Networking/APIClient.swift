@@ -77,8 +77,8 @@ extension APIClient: TargetType {
                     "locationSchema": "sky",
 					"originplace": "EDI-sky",
 					"destinationplace": "LOND-sky",
-					"outbounddate": "2019-07-13",
-					"inbounddate": "2019-07-20",
+					"outbounddate": nextMonday,
+					"inbounddate": nextTuesday,
 					"adults": "1",
                     "children": "0",
                     "infants": "0",
@@ -105,6 +105,24 @@ extension APIClient: TargetType {
 }
 
 extension APIClient {
+    var nextMonday: String {
+        let dateFormat = "yyyy-MM-dd"
+        let nextMon = nextWeekDays.first!.toDate(format: dateFormat)
+        return nextMon
+    }
+    
+    var nextTuesday: String {
+        let dateFormat = "yyyy-MM-dd"
+        let nextTuesday = nextWeekDays[1].toDate(format: dateFormat)
+        return nextTuesday
+    }
+    
+    var nextWeekDays: [Date] {
+        let arrWeekDates = Date().getWeekDates()
+        let nextweekDays = arrWeekDates.nextWeek
+        return nextweekDays
+    }
+    
 	static func getIPAddress() -> String? {
 		var address: String?
 		var ifaddr: UnsafeMutablePointer<ifaddrs>? = nil

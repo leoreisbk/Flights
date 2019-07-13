@@ -23,7 +23,9 @@ class FlightTableViewCell: UITableViewCell {
 	@IBOutlet weak var departureTime: UILabel!
 	@IBOutlet weak var arrivalTime: UILabel!
 	@IBOutlet weak var flightPrice: UILabel!
-	
+    @IBOutlet weak var arrivalOutboundDate: UILabel!
+    @IBOutlet weak var arrivalInboundDate: UILabel!
+    
 	override func awakeFromNib() {
 		super.awakeFromNib()
 		if let itinerary =  itinerary {
@@ -51,8 +53,10 @@ extension FlightTableViewCell {
 				flightPrice.isHidden = true
 			}
 
-			departureDate.text = outboundLeg.departure + " - " + outboundLeg.arrival
-			arrivalDate.text = inboundLeg.departure + " - " + inboundLeg.arrival
+			departureDate.text = "Departure - " + outboundLeg.departure
+            arrivalOutboundDate.text = "Arrival - " + outboundLeg.arrival
+			arrivalDate.text = "Departure - " + inboundLeg.departure
+            arrivalInboundDate.text = "Arrival - " + inboundLeg.arrival
 			departureTime.text = outboundLeg.duration
 			arrivalTime.text = inboundLeg.duration
 		}

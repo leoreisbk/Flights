@@ -13,6 +13,7 @@
 		1F10949420D2BF3900C89408 /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F10949320D2BF3900C89408 /* APIClient.swift */; };
 		1F10949620D4115600C89408 /* Flight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F10949520D4115600C89408 /* Flight.swift */; };
 		1F37ADD52116ABBE00F45640 /* Agent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F37ADD42116ABBE00F45640 /* Agent.swift */; };
+		1F61F2FD22DA78740011F36C /* Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F61F2FC22DA78740011F36C /* Helper.swift */; };
 		1F70649020D5F52F003CEF7A /* Leg.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F70648F20D5F52F003CEF7A /* Leg.swift */; };
 		1F70649220D5FAEC003CEF7A /* Segment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F70649120D5FAEC003CEF7A /* Segment.swift */; };
 		1F70649420D60532003CEF7A /* Itinerary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F70649320D60532003CEF7A /* Itinerary.swift */; };
@@ -54,6 +55,7 @@
 		1F10949320D2BF3900C89408 /* APIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIClient.swift; sourceTree = "<group>"; };
 		1F10949520D4115600C89408 /* Flight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Flight.swift; sourceTree = "<group>"; };
 		1F37ADD42116ABBE00F45640 /* Agent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Agent.swift; sourceTree = "<group>"; };
+		1F61F2FC22DA78740011F36C /* Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helper.swift; sourceTree = "<group>"; };
 		1F70648F20D5F52F003CEF7A /* Leg.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Leg.swift; sourceTree = "<group>"; };
 		1F70649120D5FAEC003CEF7A /* Segment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Segment.swift; sourceTree = "<group>"; };
 		1F70649320D60532003CEF7A /* Itinerary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Itinerary.swift; sourceTree = "<group>"; };
@@ -177,6 +179,14 @@
 			path = Resources;
 			sourceTree = "<group>";
 		};
+		1F61F2FB22DA784B0011F36C /* Helper */ = {
+			isa = PBXGroup;
+			children = (
+				1F61F2FC22DA78740011F36C /* Helper.swift */,
+			);
+			path = Helper;
+			sourceTree = "<group>";
+		};
 		1F70E67420D161FB00488B34 = {
 			isa = PBXGroup;
 			children = (
@@ -202,6 +212,7 @@
 		1F70E67F20D161FB00488B34 /* Flights */ = {
 			isa = PBXGroup;
 			children = (
+				1F61F2FB22DA784B0011F36C /* Helper */,
 				1F74603A20D8A0930053D7D1 /* Managers */,
 				1FF633A320D5419000FDF394 /* Flights-Bridging-Header.h */,
 				1F70E68E20D161FC00488B34 /* Info.plist */,
@@ -475,6 +486,7 @@
 			files = (
 				1F70649020D5F52F003CEF7A /* Leg.swift in Sources */,
 				1F70649220D5FAEC003CEF7A /* Segment.swift in Sources */,
+				1F61F2FD22DA78740011F36C /* Helper.swift in Sources */,
 				1FEA7ED420D98155003C7B01 /* Carrier.swift in Sources */,
 				1F10949420D2BF3900C89408 /* APIClient.swift in Sources */,
 				1F70E68520D161FB00488B34 /* SecondViewController.swift in Sources */,
