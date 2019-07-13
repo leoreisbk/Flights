@@ -23,10 +23,8 @@ extension APIClient: TargetType {
 	var headers: [String : String]? {
 		switch self {
 		case .session:
-			return ["Content-Type": "application/x-www-form-urlencoded",
-					"Accept": "application/json",
-					"X-Forwarded-For": APIClient.getIPAddress()!]
-		default:
+			return ["Content-Type": "application/x-www-form-urlencoded"]
+		case .flights:
 			return ["Content-Type": "application/json",
 					"Accept": "application/json"]
 		}
@@ -35,12 +33,12 @@ extension APIClient: TargetType {
 	var task: Task {
 		let encoding: ParameterEncoding
 		switch self.method {
-//		case .post:
-//			encoding = JSONEncoding.default
+        case .post:
+            encoding = URLEncoding.default
 		case .get:
 			encoding = URLEncoding.queryString
 		default:
-			encoding = URLEncoding.default
+			encoding = JSONEncoding.default
 		}
 		if let requestParameters = parameters {
 			return .requestParameters(parameters: requestParameters, encoding: encoding)
@@ -61,7 +59,7 @@ extension APIClient: TargetType {
 		switch self {
 		case .flights(let urlString, _, _):
 			return urlString
-		default:
+		case .session:
 			return "http://partners.api.skyscanner.net/apiservices"
 		}
 		
@@ -71,19 +69,19 @@ extension APIClient: TargetType {
 	var parameters: [String: Any]? {
 		switch self {
 		case .session(let apiKey):
-			return ["apiKey": apiKey,
-					"country": "UK",
+			return ["country": "UK",
 					"currency": "GBP",
 					"locale": "en-GB",
-					"originPlace": "EDI-sky",
-					"destinationPlace": "LOND-sky",
-					"outboundDate": "2018-08-13",
-					"inboundDate": "2018-08-14",
+                    "locationSchema": "iata",
+					"originplace": "EDI",
+					"destinationplace": "LHR",
+					"outbounddate": "2019-07-13",
+					"inbounddate": "2019-07-20",
 					"adults": "1",
+                    "children": "0",
+                    "infants": "0",
 					"cabinclass": "Economy",
-					"children": "0",
-					"infants": "0",
-					"locationSchema": "sky"]
+                    "apikey": apiKey]
 		case .flights( _, let apiKey, let page):
 			return ["apiKey": apiKey,
 					"stops": 0,
@@ -130,13 +128,18 @@ extension APIClient {
 	}
 }
 
+// MARK: - Helpers
+
 private extension String {
 	var URLEscapedString: String {
-		return self.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlHostAllowed)!
+		return self.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)!
 	}
+    
+    var utf8Encoded: Data {
+        return data(using: .utf8)!
+    }
 }
 
 func url(_ route: TargetType) -> String {
 	return route.baseURL.appendingPathComponent(route.path).absoluteString
 }
-

@@ -60,12 +60,14 @@ extension FlightsListViewController {
 			switch result {
 			case .success(let response):
 				let responseData = response.response
-				if let locationDict = responseData?.allHeaderFields {
-					if let locationURL = locationDict["Location"] as? String {
-						self.urlString = locationURL
-						completion(true)
-					}
-				} else {
+                if let locationDict = responseData?.allHeaderFields {
+                    if let locationURL = locationDict["Location"] as? String {
+                        self.urlString = locationURL
+                        completion(true)
+                    } else {
+                        completion(false)
+                    }
+                } else {
 					completion(false)
 				}
 			case .failure(let error):
