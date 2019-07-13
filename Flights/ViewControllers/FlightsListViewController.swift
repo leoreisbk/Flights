@@ -55,24 +55,23 @@ extension FlightsListViewController: UITableViewDelegate, UITableViewDataSource 
 // MARK: - Networking
 
 extension FlightsListViewController {
-	fileprivate func requestURLSession(_ apiKey: String, completion: @escaping (_ completed: Bool) -> Void) {
+	fileprivate func requestURLSession(_ apiKey: String, completion: @escaping (_ sessionURL: String) -> Void) {
 		provider.request(.session(apiKey: apiKey)) { (result) in
 			switch result {
 			case .success(let response):
 				let responseData = response.response
                 if let locationDict = responseData?.allHeaderFields {
                     if let locationURL = locationDict["Location"] as? String {
-                        self.urlString = locationURL
-                        completion(true)
+                        completion(locationURL)
                     } else {
-                        completion(false)
+                        completion("")
                     }
                 } else {
-					completion(false)
+					completion("")
 				}
 			case .failure(let error):
 				if error.response != nil {
-					completion(false)
+					completion("")
 				}
 				
 			}
@@ -100,8 +99,8 @@ extension FlightsListViewController {
                         print(err)
                     }
                 } else {
-					self.requestURLSession(ManagerKeys.ApiKey, completion: { (completed) in
-						self.tableView.isLoading = !completed
+					self.requestURLSession(ManagerKeys.ApiKey, completion: { (sessionURL) in
+                        self.tableView.isLoading = sessionURL == "" ? true : false
 					})
 				}
 			case .failure(let error):
@@ -116,12 +115,11 @@ extension FlightsListViewController {
 extension FlightsListViewController: PagingTableViewDelegate {
 	func paginate(_ tableView: PagingTableView, to page: Int) {
 		self.tableView.isLoading = true
-		requestURLSession(ManagerKeys.ApiKey) { (completed) in
-			if completed {
-				self.requestFlights(page: page, urlString: self.urlString, apiKey: ManagerKeys.ApiKey, completion: { (results) in
+		requestURLSession(ManagerKeys.ApiKey) { (sessionURL) in
+			if sessionURL != "" {
+				self.requestFlights(page: page, urlString: sessionURL, apiKey: ManagerKeys.ApiKey, completion: { (results) in
 					self.itineraries.append(contentsOf: results)
 					self.tableView.isLoading = false
-					
 				})
 			}
 		}
