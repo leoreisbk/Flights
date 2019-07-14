@@ -9,17 +9,6 @@
 import UIKit
 
 struct Segment: Codable {
-//	"Id": 0,
-//	"OriginStation": 11235,
-//	"DestinationStation": 13771,
-//	"DepartureDateTime": "2018-06-23T08:55:00",
-//	"ArrivalDateTime": "2018-06-23T10:20:00",
-//	"Carrier": 1050,
-//	"OperatingCarrier": 1050,
-//	"Duration": 85,
-//	"FlightNumber": "12",
-//	"JourneyMode": "Flight",
-//	"Directionality": "Outbound"
 
 	let identifier: Int
 	let originStation: Int

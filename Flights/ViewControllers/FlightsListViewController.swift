@@ -18,7 +18,6 @@ class FlightsListViewController: UIViewController {
 	let provider = MoyaProvider<APIClient>()
 	var itineraries: [Itinerary] = []
 	let numberOfItemsPerPage = 10
-	var urlString = ""
 	
 	fileprivate func shadoWView() {
 		let shadow = BPKShadow.shadowSm()
@@ -73,7 +72,6 @@ extension FlightsListViewController {
 				if error.response != nil {
 					completion("")
 				}
-				
 			}
 		}
 	}

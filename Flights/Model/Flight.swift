@@ -41,13 +41,10 @@ struct Flight: Codable {
                     itinerary.outboundLeg = leg
                 }
             }
-			let priceOptionsArray = itinerary.pricingOptions.map({ (priceOptionJSON) -> PricingOption in
-				var priceOption = priceOptionJSON
-                priceOption.agents = agents.filter({priceOptionJSON.agentsIdentifiers.contains($0.identifier)})
-				return priceOption
-			})
+            
+            let priceOptions = itinerary.pricingOptions.filter({$0.agents.map({$0.identifier}) == $0.agentsIdentifiers.map({$0})})
 			
-			itinerary.priceOptions = priceOptionsArray
+			itinerary.priceOptions = priceOptions
 			
 			return itinerary
 		}

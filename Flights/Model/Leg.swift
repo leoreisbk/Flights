@@ -10,31 +10,6 @@ import UIKit
 
 struct Leg: Codable {
 
-//	"Id": "11235-1806230855--32356-0-13771-1806231020",
-//	"SegmentIds": [
-//	0
-//	],
-//	"OriginStation": 11235,
-//	"DestinationStation": 13771,
-//	"Departure": "2018-06-23T08:55:00",
-//	"Arrival": "2018-06-23T10:20:00",
-//	"Duration": 85,
-//	"JourneyMode": "Flight",
-//	"Stops": [],
-//	"Carriers": [
-//	1050
-//	],
-//	"OperatingCarriers": [
-//	1050
-//	],
-//	"Directionality": "Outbound",
-//	"FlightNumbers": [
-//	{
-//	"FlightNumber": "12",
-//	"CarrierId": 1050
-//	}
-//	]
-
 	let identifier: String
 	let segmentIdentifiers: [Int]
 	var segments: [Segment] = []

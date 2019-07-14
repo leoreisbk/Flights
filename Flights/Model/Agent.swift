@@ -9,15 +9,7 @@
 import UIKit
 
 struct Agent: Codable {
-
-//	"Id": 2043147,
-//	"Name": "Bravofly",
-//	"ImageUrl": "http://s1.apideeplink.com/images/websites/bfuk.png",
-//	"Status": "UpdatesComplete",
-//	"OptimisedForMobile": true,
-//	"BookingNumber": "0203 499 5179",
-//	"Type": "TravelAgent"
-
+    
 	let identifier: Int
 	let name: String
 	let imageURL: String

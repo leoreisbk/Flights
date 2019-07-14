@@ -9,13 +9,7 @@
 import UIKit
 
 struct Carrier: Codable {
-
-//	"Id": 885,
-//	"Code": "BE",
-//	"Name": "Flybe",
-//	"ImageUrl": "http://s1.apideeplink.com/images/airlines/BE.png",
-//	"DisplayCode": "BE"
-	
+    
 	let identifier: Int
 	let code: String
 	let name: String

@@ -10,12 +10,6 @@ import UIKit
 
 struct PricingOption: Codable {
 
-//	"Agents": [
-//	2363321
-//	],
-//	"QuoteAgeInMinutes": 38,
-//	"Price": 78.8,
-
 	let agentsIdentifiers: [Int]
 	var agents: [Agent] = []
 	let quoteAgeInMinutes: Int
