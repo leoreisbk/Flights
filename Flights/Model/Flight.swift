@@ -28,34 +28,22 @@ struct Flight: Codable {
 	fileprivate func filterItineraries(_ itinerariesJSON: [Itinerary]) -> [Itinerary] {
 		return itinerariesJSON.map { (itineraryJson) -> Itinerary in
 			var itinerary = itineraryJson
-			let _ = legs.map { (legJson) -> Void in
-				var leg  = legJson
-				let _ = legJson.segmentIdentifiers.map({ (identifier) ->  Void in
-					let segmentsFiltered = segments.filter({ $0.identifier == identifier })
-					leg.segments = segmentsFiltered
-				})
-				
-				let _ = legJson.carriersIdentifiers.map({ (identifier) -> Void in
-					let carriersFiltered = carriers.filter({ $0.identifier == identifier
-					})
-					leg.carriers = carriersFiltered
-				})
-				
-				if itineraryJson.inboundLegId == leg.identifier {
-					itinerary.inboundLeg = leg
-				}
-				
-				if itineraryJson.outboundLegId == leg.identifier {
-					itinerary.outboundLeg = leg
-				}
-			}
+            let _ = legs.map { (legJson) -> Void in
+                var leg  = legJson
+                leg.segments = segments.filter({ legJson.segmentIdentifiers.contains($0.identifier)})
+                leg.carriers = carriers.filter({ legJson.carriersIdentifiers.contains($0.identifier)})
+                
+                if itineraryJson.inboundLegId == leg.identifier {
+                    itinerary.inboundLeg = leg
+                }
+                
+                if itineraryJson.outboundLegId == leg.identifier {
+                    itinerary.outboundLeg = leg
+                }
+            }
 			let priceOptionsArray = itinerary.pricingOptions.map({ (priceOptionJSON) -> PricingOption in
 				var priceOption = priceOptionJSON
-				let _ = priceOptionJSON.agentsIdentifiers.map({ (identifier) -> Void in
-					let agentsArray = agents.filter({ $0.identifier == identifier
-					})
-					priceOption.agents = agentsArray
-				})
+                priceOption.agents = agents.filter({priceOptionJSON.agentsIdentifiers.contains($0.identifier)})
 				return priceOption
 			})
 			
